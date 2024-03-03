@@ -2,20 +2,17 @@ import "./sidebar.css";
 import RssFeed from "@mui/icons-material/Feed"
 import PersonIcon from "@mui/icons-material/Person";
 import ChatIcon from "@mui/icons-material/Chat";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-// import Chat from  "@mui/icons-material/Chat"
-// import Group from  "@mui/icons-material/Group"
-// import CloseFriend from "../closeFriend/CloseFriend";
-import SmartToyIcon from '@mui/icons-material/SmartToy';
-// import { Users } from "../../dummyData";
+// import NotificationsIcon from "@mui/icons-material/Notifications";
+// import SmartToyIcon from '@mui/icons-material/SmartToy';
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
 import { useLocation } from "react-router-dom";
-import CloseFriend from "../closeFriend/CloseFriend";
+
 
 
 export default function Sidebar() {
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const location = useLocation();
   const { user, dispatch } = useContext(AuthContext);
   const logout = () => {
@@ -38,16 +35,6 @@ export default function Sidebar() {
             </Link>
           </li>
           <li className="sidebarListItem">
-            <NotificationsIcon className="sidebarIcon" />
-            <span className="sidebarListItemText">Notificações</span>
-          </li>
-          <li className="sidebarListItem">
-            <Link to="/toys" style={{ textDecoration: "none", color: "black", display: "flex", justifyContent: "center", alignItems: "center" }}>
-              <SmartToyIcon className="sidebarIcon" />
-              <span className="sidebarListItemText">ChatBot</span>
-            </Link>
-          </li>
-          <li className="sidebarListItem">
             <Link to={`/profile/${user.username}`}
               style={{ textDecoration: "none", color: "black", display: "flex", justifyContent: "center", alignItems: "center" }}>
               <PersonIcon className="sidebarIcon" />
@@ -58,16 +45,16 @@ export default function Sidebar() {
             <li className="sidebarListItem" onClick={logout}
               style={{ textDecoration: "none", fontWeight: "bold", color: "white", display: "flex", justifyContent: "center", alignItems: "center", height: "35px", backgroundColor: "#ee6065", borderRadius: "5px", cursor: "pointer", fontSize: "18px" }}
             >
-          Sair
-        </li>
+              Sair
+            </li>
           )}
-      </ul>
-      {/* <button className="sidebarButton">Show More</button> */}
-      <hr className="sidebarHr" />
-      <ul className="sidebarFriendList">
-          <CloseFriend />
         </ul>
-    </div>
+        {/* <button className="sidebarButton">Show More</button> */}
+        <hr className="sidebarHr" />
+        <h2>Notas da Equipe</h2>
+        <img className="rightbarImg"
+          src={PF + "Infografico.png"} alt="" />
+      </div>
     </div >
   );
 }

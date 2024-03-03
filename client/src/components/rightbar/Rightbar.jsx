@@ -1,11 +1,12 @@
 import "./rightbar.css";
-import Online from "../online/Online";
+// import Online from "../online/Online";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import Add from "@mui/icons-material/Add";
 import Remove from "@mui/icons-material/Remove";
 import api from "../../service/api";
+import FlowiseChatbot from "../chatbot/ChatBot";
 
 export default function Rightbar({ user }) {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -17,11 +18,13 @@ export default function Rightbar({ user }) {
 
     useEffect(() => {
         const getFriends = async () => {
-            try {
-                const friendList = await api.get("/users/friends/" + user._id);
-                setFriends(friendList.data);
-            } catch (err) {
-                console.log(err);
+            if (user) {
+                try {
+                    const friendList = await api.get("/users/friends/" + user._id);
+                    setFriends(friendList.data);
+                } catch (err) {
+                    console.error(err);
+                }
             }
         };
         getFriends();
@@ -30,15 +33,15 @@ export default function Rightbar({ user }) {
     const handleClick = async () => {
         try {
             if (followed) {
-                await api.put(`/users/${user._id}/unfollow`, {
-                    userId: currentUser._id,
-                });
-                dispatch({ type: "UNFOLLOW", payload: user._id });
-            } else {
                 await api.put(`/users/${user._id}/follow`, {
                     userId: currentUser._id,
                 });
                 dispatch({ type: "FOLLOW", payload: user._id });
+            } else {
+                await api.put(`/users/${user._id}/unfollow`, {
+                    userId: currentUser._id,
+                });
+                dispatch({ type: "UNFOLLOW", payload: user._id });
             }
             setFollowed(!followed);
         } catch (err) {
@@ -48,9 +51,7 @@ export default function Rightbar({ user }) {
     const HomeRightbar = () => {
         return (
             <>
-                <ul className="rightbarFriendList">
-                        <Online/>
-                </ul>
+            <FlowiseChatbot />
             </>
         );
     };
@@ -60,18 +61,17 @@ export default function Rightbar({ user }) {
             <>
                 {user.username !== currentUser.username && (
                     <button className="rightbarFollowButton" onClick={handleClick}>
-                        {followed ? "Seguindo" : "Seguir"}
-                        {followed ? <Remove /> : <Add />}
+                        {followed ? "Seguir" : "Seguindo"}
+                        {followed ? <Add /> : <Remove /> }
                     </button>
                 )}
-                <h4 className="rightbarTitle">Informação de usuário</h4>
+                {/* <h4 className="rightbarTitle">Informação de usuário</h4>
                 <div className="rightbarInfo">
                     <div className="rightbarInfoItem">
                         <span className="rightbarInfoKey">City:</span>
                         <span className="rightbarInfoValue">{user.city}</span>
                     </div>
-                    
-                </div>
+                </div> */}
                 <h4 className="rightbarTitle">Seguindo</h4>
                 <div className="rightbarFollowings">
                     {friends.map((friend) => (

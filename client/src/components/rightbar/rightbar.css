@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
+
 .rightbar {
   flex: 3.5;
 }
@@ -6,16 +8,6 @@
   padding: 20px 20px 0 0;
 }
 
-.birthdayContainer {
-  display: flex;
-  align-items: center;
-}
-
-.birthdayImg {
-  width: 40px;
-  height: 40px;
-  margin-right: 10px;
-}
 
 .birthdayText {
   font-weight: 300;
@@ -31,11 +23,17 @@
 .rightbarTitle {
   margin-bottom: 20px;
 }
+h2{
+  font-family: 'Satisfy';
+  display: flex;
+  justify-content: center;
+  color: #db8522;
+}
 
-.rightbarFriendList {
+.rightbarImg {
   padding: 0;
   margin: 0;
-  list-style: none;
+  width: 100%;
 }
 
 

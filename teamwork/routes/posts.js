@@ -101,5 +101,23 @@ router.get("/profile/:username", async (req, res) => {
     }
 });
 
+router.post("/:id/comment", async (req, res) => {
+    const comment = {
+        username: req.username,
+        userId: req.body.userId,
+        text: req.body.text,
+    };
+
+    try {
+        const post = await Post.findById(req.params.id);
+        post.comments.push(comment);
+        await post.save();
+        res.status(200).json(post);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+
 
 module.exports = router;

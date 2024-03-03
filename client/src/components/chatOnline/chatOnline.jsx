@@ -1,6 +1,6 @@
-import api from "../../service/api";
 import { useEffect, useState } from "react";
 import "./chatOnline.css";
+import api from "../../service/api";
 
 export default function ChatOnline({ onlineUsers, currentId, setCurrentChat }) {
     const [friends, setFriends] = useState([]);
@@ -33,8 +33,8 @@ export default function ChatOnline({ onlineUsers, currentId, setCurrentChat }) {
 
     return (
         <div className="chatOnline">
-            {onlineFriends.map((o, user, index) => (
-                <div className="chatOnlineFriend" key={user._id || index} onClick={() => handleClick(o)}>
+            {onlineFriends.map((o) => (
+                <div className="chatOnlineFriend" key={o._id} onClick={() => handleClick(o)}>
                     <div className="chatOnlineImgContainer">
                         <img
                             className="chatOnlineImg"

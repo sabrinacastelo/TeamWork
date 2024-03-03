@@ -2,7 +2,7 @@ import "./messenger.css";
 import Topbar from "../../components/topbar/Topbar";
 import Conversation from "../../components/conversations/Conversation";
 import Message from "../../components/message/Message";
-import ChatOnline from "../../components/chatOnline/chatOnline";
+import Online from "../../components/online/Online";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import api from "../../service/api";
@@ -107,8 +107,8 @@ export default function Messenger() {
                 <div className="chatMenu">
                     <div className="chatMenuWrapper">
                         <input placeholder="Procurar conta" className="chatInput" />
-                        {conversations.map((c) => (
-                            <div onClick={() => setCurrentChat(c)}>
+                        {conversations.map((c, index) => (
+                            <div key={index} onClick={() => setCurrentChat(c)}>
                                 <Conversation conversation={c} currentUser={user} />
                             </div>
                         ))}
@@ -119,8 +119,8 @@ export default function Messenger() {
                         {currentChat ? (
                             <>
                                 <div className="chatBoxTop">
-                                    {messages.map((m) => (
-                                        <div ref={scrollRef}>
+                                    {messages.map((m, index) => (
+                                        <div ref={scrollRef} key={m._id || index}>
                                             <Message message={m} own={m.sender === user._id} />
                                         </div>
                                     ))}
@@ -146,11 +146,7 @@ export default function Messenger() {
                 </div>
                 <div className="chatOnline">
                     <div className="chatOnlineWrapper">
-                        <ChatOnline
-                            onlineUsers={onlineUsers}
-                            currentId={user._id}
-                            setCurrentChat={setCurrentChat}
-                        />
+                        <Online />
                     </div>
                 </div>
             </div>

@@ -12,6 +12,43 @@ export default function Post({ post }) {
     const [user, setUser] = useState({});
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const { user: currentUser } = useContext(AuthContext);
+    const [showModal, setShowModal] = useState(false);
+
+    const openModal = () => {
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
+
+    const [comment, setComment] = useState('');
+    const [comments, setComments] = useState(post.comments);
+
+    const handleCommentSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!comment.trim()) {
+            return;
+        }
+
+        const newComment = {
+            postId: post._id,
+            userId: currentUser._id,
+            username: currentUser.username,
+            text: comment,
+        };
+
+        try {
+            await api.post(`posts/${post._id}/comment`, newComment);
+            setComments(prevComments => [...prevComments, newComment]);
+            setComment('');
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
 
     useEffect(() => {
         setIsLiked(post.likes.includes(currentUser._id));
@@ -72,12 +109,12 @@ export default function Post({ post }) {
                 </div>
                 <div className="postBottom">
                     <div className="postBottomLeft">
-                        <img
+                        {/* <img
                             className="likeIcon"
                             src={`${PF}like.png`}
                             onClick={likeHandler}
                             alt=""
-                        />
+                        /> */}
                         <img
                             className="likeIcon"
                             src={`${PF}heart.png`}
@@ -87,7 +124,68 @@ export default function Post({ post }) {
                         <span className="postLikeCounter">{like} pessoas curtiram isso</span>
                     </div>
                     <div className="postBottomRight">
-                        <span className="postCommentText">{post.comment} comentários</span>
+                        <span className="postCommentText" onClick={openModal}>
+                            {post.comments ? post.comments.length : 0} comentários
+                        </span>
+                        {showModal && (
+                            <div className="modal">
+                                <div class="container">
+                                    <div class="login-form">
+                                        <div class="header">
+                                            <label class="title">Comentários</label>
+                                        </div>
+                                        <div className="modalContent">
+                                            <div className="comments">
+                                                {comments.map((comment) => {
+                                                    console.log(comment);
+                                                    return (
+                                                        <div className="comment" key={comment._id}>
+                                                            <img
+                                                                className="chatImg"
+                                                                src={
+                                                                    comment?.user?.profilePicture
+                                                                        ? PF + comment.user.profilePicture
+                                                                        : PF + "person/noAvatar.png"
+                                                                }
+                                                                alt=""
+                                                            />
+                                                            <h5>{comment.user?.username}</h5>
+                                                            <p style={{fontSize: '14px'  , whiteSpace: 'pre-wrap', wordWrap: 'break-word'}}>{comment.text}</p>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="testimonial">
+                                        <div className="comment" key={comment._id}>
+                                            <img id="picture"
+                                                className="chatImg"
+                                                src={
+                                                    comment?.user?.profilePicture
+                                                        ? PF + comment.user.profilePicture
+                                                        : PF + "person/noAvatar.png"
+                                                }
+                                                alt=""
+                                            />
+                                            <h5>{comment.user?.username}</h5>
+                                            <p>{comment.text}</p>
+                                        </div>
+                                        <form className="form" onSubmit={handleCommentSubmit}>
+                                            <input id="password_field" className="input_field"
+                                                type="text"
+                                                value={comment}
+                                                onChange={(e) => setComment(e.target.value)}
+                                                placeholder="Adicione um comentário..."
+                                            />
+                                            <button class="sign-in_btn" type="submit">Comentar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <button className="fechar" onClick={closeModal}>Fechar</button>
+                            </div>
+                        )}
+
                     </div>
                 </div>
             </div>

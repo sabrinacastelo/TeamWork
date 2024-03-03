@@ -33,10 +33,17 @@ conectarAoBancoDeDados();
 app.use("/images", express.static(path.join(__dirname, "public/images")))
 
 //middleware
+
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
-app.use(cors())
+app.use(cors({
+  origin: 'http://localhost:3000' // substitua por seu domínio
+}));
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  next();
+});
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
