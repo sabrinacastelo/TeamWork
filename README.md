@@ -1,5 +1,6 @@
 # TeamWork
 
+<img src="https://github.com/sabrinacastelo/TeamWork/blob/main/teamwork/public/images/1701273029725teamwork-logo.png">
 
 
 Este é um projeto de Rede Social feita com NodeJS, ReactJS e Socket.IO para aprimorar a criação e divulgação de campanhas de projetos sociais e palestras educativas.
